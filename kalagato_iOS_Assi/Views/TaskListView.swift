@@ -9,23 +9,12 @@ import SwiftUI
 
 struct TaskListView: View {
     @StateObject private var viewModel = TaskViewModel()
-    @State private var newTaskTitle = ""
-    @State private var newTaskDetails = ""
     @State private var isAddingTask = false
     @State private var selectedTask: Task?
 
     var body: some View {
         NavigationView {
             VStack {
-                Button("Add New Task") {
-                    isAddingTask = true
-                    selectedTask = nil
-                }
-                .padding()
-                .sheet(isPresented: $isAddingTask) {
-                    TaskDetailView(viewModel: viewModel, task: selectedTask)
-                }
-
                 List {
                     ForEach(viewModel.tasks) { task in
                         NavigationLink(destination: TaskDetailView(viewModel: viewModel, task: task)) {
@@ -51,12 +40,29 @@ struct TaskListView: View {
                     }
                     .onDelete(perform: viewModel.deleteTask)
                 }
+                
+                Spacer() 
+                
+                Button(action: {
+                    isAddingTask = true
+                    selectedTask = nil
+                }) {
+                    Text("Add New Task")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .padding(.horizontal)
+                }
+                .sheet(isPresented: $isAddingTask) {
+                    TaskDetailView(viewModel: viewModel, task: selectedTask)
+                }
             }
             .navigationTitle("To-Do List")
         }
     }
 }
-
 #Preview {
     TaskListView()
 }
