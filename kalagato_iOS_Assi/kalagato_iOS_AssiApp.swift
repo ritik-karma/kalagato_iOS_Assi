@@ -11,7 +11,7 @@ import SwiftUI
 struct kalagato_iOS_AssiApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TaskListView()
         }
     }
 }
